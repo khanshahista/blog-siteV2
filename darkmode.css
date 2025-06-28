@@ -1,56 +1,103 @@
-/* Dark mode styles - only new additions */
+/* Dark mode base styles */
 .dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
+/* Navbar */
 .dark-mode .navbar {
-    background-color: #1e1e1e;
+  background-color: #1e1e1e;
 }
-
 .dark-mode .navbar ul li a {
-    color: #e0e0e0;
+  color: #e0e0e0;
 }
 
-.dark-mode .search-container input {
-    background-color: #333;
-    color: #f8efef;
-    border-color: #555;
+/* Search Input */
+.dark-mode .search-container input,
+.dark-mode #algoSearchInput {
+  background-color: #2a2a2a;
+  color: #f8f8f8;
+  border: 1px solid #555;
+}
+.dark-mode #algoSearchInput:focus {
+  border-color: #9c64ff;
+  box-shadow: 0 0 10px rgba(156, 100, 255, 0.3);
 }
 
+/* Blog / Post Cards */
 .dark-mode .blog-card {
-    background-color: #6d6d6d;
-    border-color: #f8f8f8;
+  background-color: #6d6d6d;
+  border-color: #f8f8f8;
 }
 .dark-mode .post {
-    background-color: #1e1e1e;
-    border-color: #333;
+  background-color: #1e1e1e;
+  border-color: #333;
 }
 
+/* Modal */
 .dark-mode .modal-content {
-    background-color: #1e1e1e;
-    color: #e0e0e0;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
 }
 
-.dark-mode .footer {
-    background-color: #1e1e1e;
-    border-top: 1px solid #333;
+/* Footer */
+.dark-mode .footer,
+.dark-mode .footer-custom {
+  background-color: #1e1e1e;
+  border-top: 1px solid #333;
+}
+.dark-mode .footer a,
+.dark-mode .footer-custom a {
+  color: #ccc;
+}
+.dark-mode .footer a:hover,
+.dark-mode .footer-custom a:hover {
+  color: #ffa726;
 }
 
+/* Dark Mode Toggle */
 .dark-mode-toggle {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 1000;
-    background: #f0f0f0;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 1000;
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.dark-mode .dark-mode-toggle {
+  background: #333;
+  color: #fff;
 }
 
-.dark-mode .dark-mode-toggle {
-    background: #333;
-    color: #fff;
+/* ===== Algo Cards in Dark Mode ===== */
+.dark-mode .algo-card {
+  background-color: #2a2a3d;
+  color: #f0f0f0;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Inputs, selects, and buttons inside algo cards */
+.dark-mode .algo-card input,
+.dark-mode .algo-card select,
+.dark-mode .algo-card button {
+  background-color: #3b3b51;
+  color: #f0f0f0;
+  border: 1px solid #666;
+}
+
+/* Output area in algo cards */
+.dark-mode .algo-card div[id$="Output"] {
+  background-color: #1e1e30;
+  color: #f0f0f0;
+  border: 1px solid #444;
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.08);
+}
+
+/* Hover effect for algo card buttons */
+.dark-mode .algo-card button:hover {
+  background-color: #51247a;
 }

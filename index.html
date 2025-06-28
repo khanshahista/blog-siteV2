@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tech Blog</title>
+  <title>OS Algorithm Simulator</title>
 
   <!-- SEO Meta -->
-  <meta name="description" content="Tech Blog sharing insightful articles, tutorials, and trends.">
+  <meta name="description" content="Simulate OS algorithms like FCFS, SJF, FIFO, LRU, SSTF, SCAN, C-SCAN, LOOK, C-LOOK">
   <meta name="author" content="Shahista Khan">
-  <meta name="keywords" content="tech blog, programming, web development, tutorials, coding, technology, Shahista Khan">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Tech Blog" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://khanshahista.github.io/blog-website/" />
+  <meta name="keywords" content="Operating System Algorithms, FCFS, SJF, Page Replacement, Disk Scheduling, Simulator, Shahista Khan">
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,7 +17,6 @@
 </head>
 <body>
 
-  <!-- Dark Mode Button -->
   <button id="darkModeToggle" class="dark-mode-toggle">🌙 Dark Mode</button>
 
   <!-- Navbar -->
@@ -32,20 +26,103 @@
       <li><a href="#about">About</a></li>
     </ul>
   </div>
+<div class="search-container reveal" style="text-align:center; margin-bottom: 30px;">
+  <input type="text" id="algoSearchInput" placeholder="Search an algorithm..." />
+</div>
+
 
   <!-- HOME SECTION -->
   <div id="home">
-    <!-- Search -->
-    <div class="search-container reveal">
-      <input type="text" id="searchInput" placeholder="Search tech articles..." onkeyup="searchPosts()" />
-    </div>
-
-    <!-- Blog Posts -->
     <div class="container reveal">
-      <div class="blog-posts" id="blog-container"></div>
+      <h2 style="text-align:center;">Operating System Algorithm Simulator</h2>
+      <div class="algo-section">
+      
+
+        <!-- FCFS -->
+        <div class="algo-card">
+          <h3>FCFS (First Come First Serve)</h3>
+          <input type="text" id="fcfsInput" placeholder="Enter burst times (comma-separated)">
+          <button onclick="simulateFCFS()">Simulate</button>
+          <div id="fcfsOutput"></div>
+        </div>
+
+        <!-- SJF -->
+        <div class="algo-card">
+          <h3>SJF (Shortest Job First)</h3>
+          <input type="text" id="sjfInput" placeholder="Enter burst times (comma-separated)">
+          <button onclick="simulateSJF()">Simulate</button>
+          <div id="sjfOutput"></div>
+        </div>
+
+        <!-- FIFO -->
+        <div class="algo-card">
+          <h3>FIFO (Page Replacement)</h3>
+          <input type="text" id="fifoInput" placeholder="Enter reference string (comma-separated)">
+          <input type="number" id="fifoFrames" placeholder="Frames">
+          <button onclick="simulateFIFO()">Simulate</button>
+          <div id="fifoOutput"></div>
+        </div>
+
+        <!-- LRU -->
+        <div class="algo-card">
+          <h3>LRU (Page Replacement)</h3>
+          <input type="text" id="lruInput" placeholder="Enter reference string (comma-separated)">
+          <input type="number" id="lruFrames" placeholder="Frames">
+          <button onclick="simulateLRU()">Simulate</button>
+          <div id="lruOutput"></div>
+        </div>
+
+        <!-- SSTF -->
+        <div class="algo-card">
+          <h3>SSTF (Disk Scheduling)</h3>
+          <input type="text" id="sstfInput" placeholder="Enter disk queue (comma-separated)">
+          <input type="number" id="sstfHead" placeholder="Initial head position">
+          <button onclick="simulateSSTF()">Simulate</button>
+          <div id="sstfOutput"></div>
+        </div>
+
+        <!-- SCAN -->
+        <div class="algo-card">
+          <h3>SCAN</h3>
+          <input type="text" id="scanInput" placeholder="Enter disk queue (comma-separated)">
+          <input type="number" id="scanHead" placeholder="Initial head position">
+          <select id="scanDir"><option value="left">Left</option><option value="right">Right</option></select>
+          <button onclick="simulateSCAN()">Simulate</button>
+          <div id="scanOutput"></div>
+        </div>
+
+        <!-- C-SCAN -->
+        <div class="algo-card">
+          <h3>C-SCAN</h3>
+          <input type="text" id="cscanInput" placeholder="Enter disk queue (comma-separated)">
+          <input type="number" id="cscanHead" placeholder="Initial head position">
+          <button onclick="simulateCSCAN()">Simulate</button>
+          <div id="cscanOutput"></div>
+        </div>
+
+        <!-- LOOK -->
+        <div class="algo-card">
+          <h3>LOOK</h3>
+          <input type="text" id="lookInput" placeholder="Enter disk queue (comma-separated)">
+          <input type="number" id="lookHead" placeholder="Initial head position">
+          <select id="lookDir"><option value="left">Left</option><option value="right">Right</option></select>
+          <button onclick="simulateLOOK()">Simulate</button>
+          <div id="lookOutput"></div>
+        </div>
+
+        <!-- C-LOOK -->
+        <div class="algo-card">
+          <h3>C-LOOK</h3>
+          <input type="text" id="clookInput" placeholder="Enter disk queue (comma-separated)">
+          <input type="number" id="clookHead" placeholder="Initial head position">
+          <button onclick="simulateCLOOK()">Simulate</button>
+          <div id="clookOutput"></div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- Comments -->
+    <!-- Comment Section -->
     <div class="comment-section reveal">
       <h3>Leave a Comment</h3>
       <textarea id="commentInput" placeholder="Write your comment..." rows="4"></textarea>
@@ -54,85 +131,66 @@
     </div>
   </div>
 
-  <!-- ABOUT SECTION -->
-<div id="about" class="about-section reveal">
-  <h2 class="about-title"><i class="fas fa-tools"></i> About The Project</h2>
-  <p class="about-text">
-  This project is a <strong>fully custom-built tech blog</strong> developed using <strong>HTML, CSS, and JavaScript</strong>.
+  <!-- ABOUT Section -->
+  <div id="about" class="about-section reveal">
+    <h2 class="about-title"><i class="fas fa-tools"></i> About The Project</h2>
+   <p class="about-text">
+  The <strong>OS Algorithm Simulator</strong> is a <em>fully responsive</em> and <em>interactive</em> web application designed to visually demonstrate fundamental <strong>operating system algorithms</strong>.
 </p>
 <p class="about-text">
-  It dynamically loads blog content from a <strong>JSON data file</strong>, with <em>real-time search</em> and animated <em>modal popups</em> for expanded reading.
+  It includes simulations for both <strong>CPU scheduling</strong> algorithms like <em>First-Come, First-Served (FCFS)</em> and <em>Shortest Job First (SJF)</em>, as well as <strong>memory and disk management</strong> algorithms such as <em>FIFO</em>, <em>LRU</em>, <em>SSTF</em>, <em>SCAN</em>, <em>C-SCAN</em>, <em>LOOK</em>, and <em>C-LOOK</em>.
 </p>
 <p class="about-text">
-  Each blog post is visually enhanced with <strong>images fetched from the Pexels API</strong>, based on the keyword of the post.
+  Built entirely using <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong>, the project is <em>frontend-only</em> with no dependencies on external frameworks or backends, making it <em>lightweight</em> and <em>fast-loading</em>.
 </p>
 <p class="about-text">
-  Users can <em>leave comments</em>, which are stored in the browser using <strong>localStorage</strong> — keeping the experience interactive without a backend.
+  Each algorithm is presented inside an elegant card layout. Users can enter inputs like burst times or reference strings and <em>instantly visualize the execution</em> with results such as waiting times, page hits/misses, or seek sequences.
 </p>
 <p class="about-text">
-  The interface includes <strong>scroll-triggered animations</strong>, <em>smooth transitions</em>, and a <strong>fully responsive layout</strong> that adapts to all devices.
+  This project is intended for <strong>students</strong>, <strong>educators</strong>, and <strong>enthusiasts</strong> who want to <em>understand OS concepts practically</em> rather than just theoretically.
 </p>
 <p class="about-text">
-  <strong>Dark mode support</strong> is integrated to enhance visual comfort and offer a better reading experience, especially in low-light environments.
+  Features like a <em>dark mode</em> toggle, <em>comment section</em>, <em>smooth scroll animations</em>, and <em>search functionality</em> enhance the user experience and accessibility.
 </p>
 <p class="about-text">
-  This project reflects my <strong>real-world frontend development skills</strong>, including <em>clean UI/UX design</em>, <em>API integration</em>, and performance-focused coding.
+  Ultimately, the project aims to <strong>bridge the gap</strong> between <em>abstract textbook knowledge</em> and <em>hands-on learning</em>, encouraging interactive and visual education in computer science.
 </p>
 
-</div>
 
-
-  <!-- MODAL -->
-  <div id="readMoreModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <p id="modalDetails"></p>
-    </div>
   </div>
 
-  <!-- FOOTER (with Contact Info) -->
- <footer class="footer-custom">
-  <div class="footer-columns">
-
-    <!-- Column 1: Portfolio Info -->
-    <div class="footer-col">
-      <h3>Shahista's Blog</h3>
-      <p>Thank you for visiting my personal tech blog. Stay curious and connected through the links below.</p>
-    </div>
-
-    <!-- Column 2: Quick Links -->
-    <div class="footer-col">
-      <h3>Quick Links</h3>
-      <ul class="footer-links">
-        <li><i class="fas fa-angle-right"></i> <a href="#home">Home</a></li>
-        <li><i class="fas fa-angle-right"></i> <a href="#about">About</a></li>
-        <li><i class="fas fa-angle-right"></i> <a href="#blog-container">Posts</a></li>
-        <li><i class="fas fa-angle-right"></i> <a href="#commentInput">Comments</a></li>
-      </ul>
-    </div>
-
-    <!-- Column 3: Contact Info -->
-    <div class="footer-col">
-      <h3>Contact Info</h3>
-      <p><i class="fas fa-phone-alt"></i> +91 89521xxxxx</p>
-      <p><i class="fas fa-envelope"></i> <a href="mailto:shaista6351@gmail.com">shaista6351@gmail.com</a></p>
-      <p><i class="fas fa-map-marker-alt"></i> Kolkata, India - 700001</p>
-      <div class="social-icons">
-        <a href="https://www.linkedin.com/in/shahista-khan-802126360/" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/khanshahista" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="mailto:shaista6351@gmail.com"><i class="fas fa-envelope"></i></a>
+  <!-- FOOTER -->
+  <footer class="footer-custom reveal">
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h3>Shahista's Blog</h3>
+        <p>Thank you for visiting my personal tech blog. Crack the code of operating systems — one simulation at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#home"><i class="fas fa-angle-right"></i> Home</a></li>
+          <li><a href="#about"><i class="fas fa-angle-right"></i> About</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p><i class="fas fa-envelope"></i> shaista6351@gmail.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> Kolkata, Pin - 700001 India</p>
+        <div class="social-icons">
+          <a href="mailto:shaista6351@gmail.com"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/khanshahista" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/shahista-khan-802126360/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
       </div>
     </div>
-
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2025 Shahista Khan | All rights reserved.</p>
-  </div>
-</footer>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Shahista Khan | All rights reserved.</p>
+    </div>
+  </footer>
 
   <!-- Scripts -->
-  <script src="darkmode.js"></script>
   <script src="script.js"></script>
+  <script src="darkmode.js"></script>
 </body>
 </html>

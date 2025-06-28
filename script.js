@@ -1,252 +1,233 @@
+// --- FCFS ---
+function simulateFCFS() {
+  const input = document.getElementById("fcfsInput").value;
+  const burstTimes = input.split(",").map(Number).filter(n => !isNaN(n));
+  let wt = 0, totalWT = 0, result = "Process\tBurst Time\tWaiting Time\n";
 
-const blogContainer = document.getElementById('blog-container');
-const searchInput = document.getElementById('searchInput');
-const modal = document.getElementById('readMoreModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalDetails = document.getElementById('modalDetails');
-const closeBtn = document.querySelector('.close-btn');
-
-const apiKey = 'mdB4ZRIaDQOyc6i94qFTklD5MMTVZzZHVLjIvYHq4Hd3xlzFiVa0Ak86';
-
-// Load posts from JSON instead of hardcoded array
-let blogPosts = [];
-
-function initBlog() {
-  if (!blogContainer) return; // Skip if blog-container doesn't exist (e.g., on about.html)
-  showLoading();
-  
-  // Fetch posts data from JSON
-  fetch('posts.json')
-    .then(response => response.json())
-    .then(data => {
-      blogPosts = data.posts;
-      
-      // Fetch images for each post
-      const imageFetchPromises = blogPosts.map(post => {
-        return fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(post.keyword)}&per_page=1`, {
-          headers: {
-            Authorization: apiKey
-          }
-        })
-        .then(response => response.json())
-        .then(data => {
-          return {
-            ...post,
-            imageUrl: data.photos.length > 0 ? data.photos[0].src.medium : 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg'
-          };
-        })
-        .catch(error => {
-          console.error('Error fetching image for', post.keyword, error);
-          return {
-            ...post,
-            imageUrl: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg'
-          };
-        });
-      });
-
-      return Promise.all(imageFetchPromises);
-    })
-    .then(postsWithImages => {
-      renderPosts(postsWithImages);
-      hideLoading();
-    })
-    .catch(error => {
-      console.error('Error loading posts:', error);
-      hideLoading();
-      
-      // Fallback to hardcoded posts if JSON fails
-      const fallbackPosts = [];
-      blogPosts = fallbackPosts;
-      const fallbackImages = fallbackPosts.map(post => ({
-        ...post,
-        imageUrl: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg'
-      }));
-      renderPosts(fallbackImages);
-    });
-}
-
-function renderPosts(posts) {
-  if (!blogContainer) return; // Skip if blog-container doesn't exist
-  blogContainer.innerHTML = '';
-  
-  posts.forEach((post, index) => {
-    const blogPost = document.createElement('div');
-    blogPost.className = 'post reveal';
-    blogPost.style.animationDelay = `${index * 0.1}s`; // Staggered animation
-    blogPost.innerHTML = `
-      <img src="${post.imageUrl}" alt="${post.keyword}" class="post-image">
-      <h3 class="post-title">${post.title}</h3>
-      <p class="post-snippet">${post.snippet}</p>
-      <a href="#" class="read-more" onclick="openModal('${post.title.replace(/'/g, "\\'")}', '${post.details.replace(/'/g, "\\'")}'); return false;">Read More</a>
-    `;
-    blogContainer.appendChild(blogPost);
-  });
-  
-  revealOnScroll();
-}
-
-function showLoading() {
-  if (!blogContainer) return; // Skip if blog-container doesn't exist
-  const loading = document.createElement('div');
-  loading.className = 'loading-spinner';
-  blogContainer.appendChild(loading);
-}
-
-function hideLoading() {
-  if (!blogContainer) return; // Skip if blog-container doesn't exist
-  const loading = document.querySelector('.loading-spinner');
-  if (loading) loading.remove();
-}
-
-function openModal(title, content) {
-  if (!modal || !modalTitle || !modalDetails) return; // Skip if modal elements don't exist
-  modalTitle.textContent = title;
-  modalDetails.textContent = content;
-  
-  modal.style.display = 'flex';
-  document.querySelector('.modal-content').style.animation = 'none';
-  setTimeout(() => {
-    document.querySelector('.modal-content').style.animation = 'modalFadeIn 0.3s ease-out forwards';
-  }, 10);
-  
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  if (!modal) return; // Skip if modal doesn't exist
-  modal.style.display = 'none';
-  document.body.style.overflow = 'auto';
-}
-
-if (closeBtn) {
-  closeBtn.addEventListener('click', closeModal);
-}
-if (modal) {
-  window.addEventListener('click', (event) => {
-    if (event.target === modal) closeModal();
-  });
-}
-
-function searchPosts() {
-  if (!searchInput || !blogContainer) return; // Skip if searchInput or blog-container doesn't exist
-  const searchTerm = searchInput.value.toLowerCase();
-  const filteredPosts = blogPosts.filter(post => 
-    post.title.toLowerCase().includes(searchTerm) || 
-    post.snippet.toLowerCase().includes(searchTerm) ||
-    post.details.toLowerCase().includes(searchTerm)
-  );
-  
-  showLoading();
-  const imageFetchPromises = filteredPosts.map(post => {
-    return fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(post.keyword)}&per_page=1`, {
-      headers: {
-        Authorization: apiKey
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      return {
-        ...post,
-        imageUrl: data.photos.length > 0 ? data.photos[0].src.medium : 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg'
-      };
-    })
-    .catch(error => {
-      console.error('Error fetching image for', post.keyword, error);
-      return {
-        ...post,
-        imageUrl: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg'
-      };
-    });
+  burstTimes.forEach((bt, i) => {
+    result += `P${i + 1}\t\t${bt}\t\t${wt}\n`;
+    totalWT += wt;
+    wt += bt;
   });
 
-  Promise.all(imageFetchPromises)
-    .then(postsWithImages => {
-      renderPosts(postsWithImages);
-      hideLoading();
-    })
-    .catch(error => {
-      console.error('Error loading filtered posts:', error);
-      hideLoading();
-    });
+  result += `\nAverage Waiting Time: ${(totalWT / burstTimes.length).toFixed(2)}`;
+  document.getElementById("fcfsOutput").innerText = result;
 }
 
-function revealOnScroll() {
-  const reveals = document.querySelectorAll('.reveal');
-  const windowHeight = window.innerHeight;
-  const revealPoint = 150;
-  
-  reveals.forEach(reveal => {
-    const revealTop = reveal.getBoundingClientRect().top;
-    if (revealTop < windowHeight - revealPoint) {
-      reveal.classList.add('active');
+// --- SJF ---
+function simulateSJF() {
+  const input = document.getElementById("sjfInput").value;
+  const burstTimes = input.split(",").map(Number).filter(n => !isNaN(n)).sort((a, b) => a - b);
+  let wt = 0, totalWT = 0, result = "Process\tBurst Time\tWaiting Time\n";
+
+  burstTimes.forEach((bt, i) => {
+    result += `P${i + 1}\t\t${bt}\t\t${wt}\n`;
+    totalWT += wt;
+    wt += bt;
+  });
+
+  result += `\nAverage Waiting Time: ${(totalWT / burstTimes.length).toFixed(2)}`;
+  document.getElementById("sjfOutput").innerText = result;
+}
+
+// --- FIFO ---
+function simulateFIFO() {
+  const ref = document.getElementById("fifoInput").value.split(",").map(Number);
+  const frames = parseInt(document.getElementById("fifoFrames").value);
+  let queue = [], output = "", hits = 0, misses = 0;
+
+  ref.forEach(p => {
+    if (queue.includes(p)) hits++;
+    else {
+      misses++;
+      if (queue.length >= frames) queue.shift();
+      queue.push(p);
     }
+    output += `Page: ${p} | Frames: [${queue.join(", ")}] | ${queue.includes(p) ? "Hit" : "Miss"}\n`;
   });
+
+  output += `\nTotal Hits: ${hits}, Misses: ${misses}`;
+  document.getElementById("fifoOutput").innerText = output;
 }
 
-let lastScroll = 0;
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
-  const navbar = document.querySelector('.navbar');
-  
-  if (navbar) {
-    if (currentScroll <= 10) {
-      navbar.style.transform = 'translateY(0)';
-    } else if (currentScroll > lastScroll && currentScroll > 100) {
-      navbar.style.transform = 'translateY(-100%)';
+// --- LRU ---
+function simulateLRU() {
+  const ref = document.getElementById("lruInput").value.split(",").map(Number);
+  const frames = parseInt(document.getElementById("lruFrames").value);
+  let mem = [], recent = [], output = "", hits = 0, misses = 0;
+
+  ref.forEach(p => {
+    if (mem.includes(p)) {
+      hits++;
+      recent.splice(recent.indexOf(p), 1);
+      recent.push(p);
     } else {
-      navbar.style.transform = 'translateY(0)';
+      misses++;
+      if (mem.length < frames) {
+        mem.push(p);
+        recent.push(p);
+      } else {
+        const lru = recent.shift();
+        mem.splice(mem.indexOf(lru), 1);
+        mem.push(p);
+        recent.push(p);
+      }
     }
-    lastScroll = currentScroll;
-  }
-  
-  revealOnScroll();
-});
+    output += `Page: ${p} | Frames: [${mem.join(", ")}] | ${mem.includes(p) ? "Hit" : "Miss"}\n`;
+  });
 
-document.addEventListener('DOMContentLoaded', () => {
-  initBlog();
-  revealOnScroll();
-});
-
-if (searchInput) {
-  searchInput.addEventListener('input', searchPosts);
+  output += `\nTotal Hits: ${hits}, Misses: ${misses}`;
+  document.getElementById("lruOutput").innerText = output;
 }
 
-// === Animated Comment Section ===
-document.addEventListener('DOMContentLoaded', () => {
-  const commentsList = document.getElementById('commentsList');
-  if (commentsList) {
-    loadComments();
+// --- SSTF ---
+function simulateSSTF() {
+  const input = document.getElementById("sstfInput").value.split(",").map(Number);
+  let head = parseInt(document.getElementById("sstfHead").value);
+  let queue = [...input], output = `Start at head: ${head}\n`, total = 0;
+
+  while (queue.length) {
+    let closest = queue.reduce((a, b) => Math.abs(a - head) < Math.abs(b - head) ? a : b);
+    total += Math.abs(head - closest);
+    output += `Move to ${closest} (Distance: ${Math.abs(head - closest)})\n`;
+    head = closest;
+    queue.splice(queue.indexOf(closest), 1);
   }
-  revealOnScroll();
-});
 
+  output += `\nTotal Seek Time: ${total}`;
+  document.getElementById("sstfOutput").innerText = output;
+}
+
+// --- SCAN ---
+function simulateSCAN() {
+  let q = document.getElementById("scanInput").value.split(",").map(Number).sort((a, b) => a - b);
+  let head = parseInt(document.getElementById("scanHead").value);
+  let dir = document.getElementById("scanDir").value;
+  let output = `Start at head: ${head}\n`, total = 0;
+
+  let left = q.filter(n => n < head).reverse();
+  let right = q.filter(n => n >= head);
+  let seq = dir === "left" ? [...left, 0, ...right] : [...right, 199, ...left];
+
+  seq.forEach(sector => {
+    total += Math.abs(head - sector);
+    output += `Move to ${sector} (Distance: ${Math.abs(head - sector)})\n`;
+    head = sector;
+  });
+
+  output += `\nTotal Seek Time: ${total}`;
+  document.getElementById("scanOutput").innerText = output;
+}
+
+// --- C-SCAN ---
+function simulateCSCAN() {
+  let q = document.getElementById("cscanInput").value.split(",").map(Number).sort((a, b) => a - b);
+  let head = parseInt(document.getElementById("cscanHead").value);
+  let output = `Start at head: ${head}\n`, total = 0;
+
+  let right = q.filter(n => n >= head);
+  let left = q.filter(n => n < head);
+  let seq = [...right, 199, 0, ...left];
+
+  seq.forEach(sector => {
+    total += Math.abs(head - sector);
+    output += `Move to ${sector} (Distance: ${Math.abs(head - sector)})\n`;
+    head = sector;
+  });
+
+  output += `\nTotal Seek Time: ${total}`;
+  document.getElementById("cscanOutput").innerText = output;
+}
+
+// --- LOOK ---
+function simulateLOOK() {
+  let q = document.getElementById("lookInput").value.split(",").map(Number).sort((a, b) => a - b);
+  let head = parseInt(document.getElementById("lookHead").value);
+  let dir = document.getElementById("lookDir").value;
+  let output = `Start at head: ${head}\n`, total = 0;
+
+  let left = q.filter(n => n < head).reverse();
+  let right = q.filter(n => n >= head);
+  let seq = dir === "left" ? [...left, ...right] : [...right, ...left];
+
+  seq.forEach(sector => {
+    total += Math.abs(head - sector);
+    output += `Move to ${sector} (Distance: ${Math.abs(head - sector)})\n`;
+    head = sector;
+  });
+
+  output += `\nTotal Seek Time: ${total}`;
+  document.getElementById("lookOutput").innerText = output;
+}
+
+// --- C-LOOK ---
+function simulateCLOOK() {
+  let q = document.getElementById("clookInput").value.split(",").map(Number).sort((a, b) => a - b);
+  let head = parseInt(document.getElementById("clookHead").value);
+  let output = `Start at head: ${head}\n`, total = 0;
+
+  let right = q.filter(n => n >= head);
+  let left = q.filter(n => n < head);
+  let seq = [...right, ...left];
+
+  seq.forEach(sector => {
+    total += Math.abs(head - sector);
+    output += `Move to ${sector} (Distance: ${Math.abs(head - sector)})\n`;
+    head = sector;
+  });
+
+  output += `\nTotal Seek Time: ${total}`;
+  document.getElementById("clookOutput").innerText = output;
+}
+
+// === Comment Section ===
 function addComment() {
-  const input = document.getElementById('commentInput');
-  if (!input) return; // Skip if commentInput doesn't exist
-  const comment = input.value.trim();
-  if (comment === "") return;
-
-  let comments = JSON.parse(localStorage.getItem('comments')) || [];
-  comments.push(comment);
-  localStorage.setItem('comments', JSON.stringify(comments));
-
-  input.value = '';
+  const input = document.getElementById("commentInput");
+  if (!input || input.value.trim() === "") return;
+  const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+  comments.push(input.value.trim());
+  localStorage.setItem("comments", JSON.stringify(comments));
+  input.value = "";
   loadComments();
 }
 
 function loadComments() {
-  const commentsList = document.getElementById('commentsList');
-  if (!commentsList) return; // Skip if commentsList doesn't exist
-  const comments = JSON.parse(localStorage.getItem('comments')) || [];
-
-  commentsList.innerHTML = comments
-
-    .map((c, i) => `
-      <div class="comment-item reveal" style="animation-delay:${i * 0.1}s">
-        <strong>User ${i + 1}:</strong> ${c}
-      </div>
-    `)
+  const container = document.getElementById("commentsList");
+  if (!container) return;
+  const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+  container.innerHTML = comments
+    .map((c, i) => `<div class="comment">User ${i + 1}: ${c}</div>`)
     .join('');
-
-  revealOnScroll();
 }
+
+// === Scroll Reveal ===
+function revealOnScroll() {
+  document.querySelectorAll('.reveal').forEach(el => {
+    const winHeight = window.innerHeight;
+    const offset = 150;
+    const top = el.getBoundingClientRect().top;
+    if (top < winHeight - offset) el.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', revealOnScroll);
+
+// === Init ===
+document.addEventListener('DOMContentLoaded', () => {
+  loadComments();
+  revealOnScroll();
+});
+
+// === Algorithm Search ===
+function filterAlgorithms() {
+  const query = document.getElementById('algoSearchInput')?.value.toLowerCase();
+  const cards = document.querySelectorAll('.algo-card');
+  if (!query || !cards.length) return;
+
+  cards.forEach(card => {
+    const title = card.querySelector('h3')?.innerText.toLowerCase() || '';
+    card.style.display = title.includes(query) ? '' : 'none';
+  });
+}
+
+document.getElementById('algoSearchInput')?.addEventListener('input', filterAlgorithms);

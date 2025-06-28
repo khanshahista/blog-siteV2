@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Blog</title>
+
+  <!-- SEO Meta -->
+  <meta name="description" content="Tech Blog sharing insightful articles, tutorials, and trends.">
+  <meta name="author" content="Shahista Khan">
+  <meta name="keywords" content="tech blog, programming, web development, tutorials, coding, technology, Shahista Khan">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Tech Blog" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://khanshahista.github.io/blog-website/" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="darkmode.css">
+</head>
+<body>
+
+  <!-- Dark Mode Button -->
+  <button id="darkModeToggle" class="dark-mode-toggle">🌙 Dark Mode</button>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </div>
+
+  <!-- HOME SECTION -->
+  <div id="home">
+    <!-- Search -->
+    <div class="search-container reveal">
+      <input type="text" id="searchInput" placeholder="Search tech articles..." onkeyup="searchPosts()" />
+    </div>
+
+    <!-- Blog Posts -->
+    <div class="container reveal">
+      <div class="blog-posts" id="blog-container"></div>
+    </div>
+
+    <!-- Comments -->
+    <div class="comment-section reveal">
+      <h3>Leave a Comment</h3>
+      <textarea id="commentInput" placeholder="Write your comment..." rows="4"></textarea>
+      <button onclick="addComment()">Post Comment</button>
+      <div id="commentsList" class="comment-list"></div>
+    </div>
+  </div>
+
+  <!-- ABOUT SECTION -->
+<div id="about" class="about-section reveal">
+  <h2 class="about-title"><i class="fas fa-tools"></i> About The Project</h2>
+  <p class="about-text">
+  This project is a <strong>fully custom-built tech blog</strong> developed using <strong>HTML, CSS, and JavaScript</strong>.
+</p>
+<p class="about-text">
+  It dynamically loads blog content from a <strong>JSON data file</strong>, with <em>real-time search</em> and animated <em>modal popups</em> for expanded reading.
+</p>
+<p class="about-text">
+  Each blog post is visually enhanced with <strong>images fetched from the Pexels API</strong>, based on the keyword of the post.
+</p>
+<p class="about-text">
+  Users can <em>leave comments</em>, which are stored in the browser using <strong>localStorage</strong> — keeping the experience interactive without a backend.
+</p>
+<p class="about-text">
+  The interface includes <strong>scroll-triggered animations</strong>, <em>smooth transitions</em>, and a <strong>fully responsive layout</strong> that adapts to all devices.
+</p>
+<p class="about-text">
+  <strong>Dark mode support</strong> is integrated to enhance visual comfort and offer a better reading experience, especially in low-light environments.
+</p>
+<p class="about-text">
+  This project reflects my <strong>real-world frontend development skills</strong>, including <em>clean UI/UX design</em>, <em>API integration</em>, and performance-focused coding.
+</p>
+
+</div>
+
+
+  <!-- MODAL -->
+  <div id="readMoreModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDetails"></p>
+    </div>
+  </div>
+
+  <!-- FOOTER (with Contact Info) -->
+ <footer class="footer-custom">
+  <div class="footer-columns">
+
+    <!-- Column 1: Portfolio Info -->
+    <div class="footer-col">
+      <h3>Shahista's Blog</h3>
+      <p>Thank you for visiting my personal tech blog. Stay curious and connected through the links below.</p>
+    </div>
+
+    <!-- Column 2: Quick Links -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul class="footer-links">
+        <li><i class="fas fa-angle-right"></i> <a href="#home">Home</a></li>
+        <li><i class="fas fa-angle-right"></i> <a href="#about">About</a></li>
+        <li><i class="fas fa-angle-right"></i> <a href="#blog-container">Posts</a></li>
+        <li><i class="fas fa-angle-right"></i> <a href="#commentInput">Comments</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Contact Info -->
+    <div class="footer-col">
+      <h3>Contact Info</h3>
+      <p><i class="fas fa-phone-alt"></i> +91 89521xxxxx</p>
+      <p><i class="fas fa-envelope"></i> <a href="mailto:shaista6351@gmail.com">shaista6351@gmail.com</a></p>
+      <p><i class="fas fa-map-marker-alt"></i> Kolkata, India - 700001</p>
+      <div class="social-icons">
+        <a href="https://www.linkedin.com/in/shahista-khan-802126360/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/khanshahista" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="mailto:shaista6351@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Shahista Khan | All rights reserved.</p>
+  </div>
+</footer>
+
+  <!-- Scripts -->
+  <script src="darkmode.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
